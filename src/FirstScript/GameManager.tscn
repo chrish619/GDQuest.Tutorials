@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://cx2i28m17oobs"]
+
+[ext_resource type="PackedScene" uid="uid://cr8wrldck6rx3" path="res://Player.tscn" id="1_lxg3v"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="Label" type="Label" parent="WorldEnvironment"]
+offset_left = 369.0
+offset_top = 325.0
+offset_right = 460.0
+offset_bottom = 351.0
+text = "Hello World"
+
+[node name="Player" parent="." instance=ExtResource("1_lxg3v")]
