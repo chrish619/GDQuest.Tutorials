@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cf42hrup1cb37"]
+
+[ext_resource type="Texture2D" uid="uid://687wls2n3y5a" path="res://icon.svg" id="1_pqfgj"]
+[ext_resource type="Script" path="res://GodotPlayer.cs" id="2_uc6fs"]
+
+[node name="ToggleMotion" type="Node2D"]
+
+[node name="GodotPlayer" type="Sprite2D" parent="."]
+position = Vector2(589, 331)
+texture = ExtResource("1_pqfgj")
+script = ExtResource("2_uc6fs")
+
+[node name="Timer" type="Timer" parent="GodotPlayer"]
+autostart = true
+
+[node name="ClickMe" type="Button" parent="."]
+offset_left = 47.0
+offset_top = 44.0
+offset_right = 303.0
+offset_bottom = 165.0
+text = "CLick Button"

@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1utpnmptf2xf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0poc8"]
+
+[node name="GameManager" type="Node2D"]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="Player" type="Node2D" parent="Node2D"]
+
+[node name="PlayerAnimation" type="AnimatedSprite2D" parent="Node2D/Player"]
+sprite_frames = SubResource("SpriteFrames_0poc8")
+
+[node name="Enemy" type="Node2D" parent="Node2D"]
+
+[node name="LifeBar" type="Node2D" parent="Node2D"]
+
+[node name="Label" type="Label" parent="Node2D/LifeBar"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Player health:"
+
+[node name="ProgressBar" type="ProgressBar" parent="Node2D/LifeBar"]
+offset_left = 68.0
+offset_top = 92.0
+offset_right = 246.0
+offset_bottom = 119.0
+max_value = 10.0
+step = 1.0
+rounded = true
+show_percentage = false
