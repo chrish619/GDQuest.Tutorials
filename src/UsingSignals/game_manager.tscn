@@ -1,6 +1,54 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1utpnmptf2xf"]
+[gd_scene load_steps=10 format=3 uid="uid://c1utpnmptf2xf"]
+
+[ext_resource type="Texture2D" uid="uid://b1kwq751i41rs" path="res://assets/player-animations/player-damage-1.svg" id="1_ei8wn"]
+[ext_resource type="Texture2D" uid="uid://xa05v0rs2ef4" path="res://assets/player-animations/player-damage-2.svg" id="2_ycoe8"]
+[ext_resource type="Texture2D" uid="uid://mw22ctmadsmi" path="res://assets/player-animations/player.svg" id="3_0k7af"]
+[ext_resource type="Texture2D" uid="uid://b2okm5uhh0hap" path="res://assets/enemy-animations/enemy.svg" id="4_db5vy"]
+[ext_resource type="Script" path="res://SmoothPath.cs" id="4_vve6s"]
+[ext_resource type="Script" path="res://EnemyPathMovement.cs" id="5_rvmv1"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0poc8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ei8wn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_ei8wn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_ycoe8")
+}],
+"loop": true,
+"name": &"damaged",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_0k7af")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="Curve2D" id="Curve2D_jvj1f"]
+bake_interval = 0.01
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1017, 330, 0, 0, 0, 0, 976, 237, 0, 0, 0, 0, 907, 203, 0, 0, 0, 0, 789, 258, 0, 0, 0, 0, 515, 432, 0, 0, 0, 0, 372, 480, 0, 0, 0, 0, 309, 445, 0, 0, 0, 0, 277, 340, 0, 0, 0, 0, 311, 234, 0, 0, 0, 0, 357, 214, 0, 0, 0, 0, 504, 261, 0, 0, 0, 0, 788, 431, 0, 0, 0, 0, 907, 473, 0, 0, 0, 0, 970, 443, 0, 0, 0, 0, 1017, 344)
+}
+point_count = 15
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_whk1w"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_db5vy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="GameManager" type="Node2D"]
 
@@ -9,9 +57,30 @@
 [node name="Player" type="Node2D" parent="Node2D"]
 
 [node name="PlayerAnimation" type="AnimatedSprite2D" parent="Node2D/Player"]
+position = Vector2(270, 326)
+scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_0poc8")
+animation = &"damaged"
+frame = 1
+frame_progress = 0.363223
 
 [node name="Enemy" type="Node2D" parent="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="Node2D/Enemy"]
+curve = SubResource("Curve2D_jvj1f")
+script = ExtResource("4_vve6s")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Node2D/Enemy/Path2D"]
+position = Vector2(1017, 330)
+rotation = -1.98602
+
+[node name="EnemyAnimation" type="AnimatedSprite2D" parent="Node2D/Enemy/Path2D/PathFollow2D"]
+scale = Vector2(0.7, 0.7)
+sprite_frames = SubResource("SpriteFrames_whk1w")
+frame_progress = 0.838616
+
+[node name="EnemyPathMovement" type="Node2D" parent="Node2D/Enemy/Path2D/PathFollow2D"]
+script = ExtResource("5_rvmv1")
 
 [node name="LifeBar" type="Node2D" parent="Node2D"]
 
