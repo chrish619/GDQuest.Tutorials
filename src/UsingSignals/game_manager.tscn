@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c1utpnmptf2xf"]
+[gd_scene load_steps=11 format=3 uid="uid://c1utpnmptf2xf"]
 
 [ext_resource type="Texture2D" uid="uid://b1kwq751i41rs" path="res://assets/player-animations/player-damage-1.svg" id="1_ei8wn"]
 [ext_resource type="Texture2D" uid="uid://xa05v0rs2ef4" path="res://assets/player-animations/player-damage-2.svg" id="2_ycoe8"]
@@ -33,11 +33,10 @@ animations = [{
 }]
 
 [sub_resource type="Curve2D" id="Curve2D_jvj1f"]
-bake_interval = 0.01
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 1017, 330, 0, 0, 0, 0, 976, 237, 0, 0, 0, 0, 907, 203, 0, 0, 0, 0, 789, 258, 0, 0, 0, 0, 515, 432, 0, 0, 0, 0, 372, 480, 0, 0, 0, 0, 309, 445, 0, 0, 0, 0, 277, 340, 0, 0, 0, 0, 311, 234, 0, 0, 0, 0, 357, 214, 0, 0, 0, 0, 504, 261, 0, 0, 0, 0, 788, 431, 0, 0, 0, 0, 907, 473, 0, 0, 0, 0, 970, 443, 0, 0, 0, 0, 1017, 344)
+"points": PackedVector2Array(86.7429, -49.7561, -86.7429, 49.7561, 625, 350, 87.2715, -32.7144, -87.2715, 32.7144, 414, 470, -5.63619, 99.841, 5.63619, -99.841, 277, 340, -82.0622, -34.9147, 82.0622, 34.9147, 428, 222, -85.4352, -35.9915, 85.4352, 35.9915, 817, 471, 0, 100, 0, -100, 963, 341, 81.5099, -34.2593, -81.5099, 34.2593, 817, 221, 75.7203, -47.6266, -75.7203, 47.6266, 625, 350)
 }
-point_count = 15
+point_count = 8
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_whk1w"]
 animations = [{
@@ -49,6 +48,16 @@ animations = [{
 "name": &"default",
 "speed": 5.0
 }]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpefy"]
+bg_color = Color(0.431373, 0.682353, 0.243137, 1)
+border_color = Color(0.933333, 0.768627, 0.588235, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 17
 
 [node name="GameManager" type="Node2D"]
 
@@ -67,12 +76,14 @@ frame_progress = 0.363223
 [node name="Enemy" type="Node2D" parent="Node2D"]
 
 [node name="Path2D" type="Path2D" parent="Node2D/Enemy"]
+position = Vector2(-6, -4)
 curve = SubResource("Curve2D_jvj1f")
 script = ExtResource("4_vve6s")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Node2D/Enemy/Path2D"]
-position = Vector2(1017, 330)
-rotation = -1.98602
+position = Vector2(962.952, 345.848)
+rotation = -1.55098
+progress = 1406.38
 
 [node name="EnemyAnimation" type="AnimatedSprite2D" parent="Node2D/Enemy/Path2D/PathFollow2D"]
 scale = Vector2(0.7, 0.7)
@@ -83,18 +94,23 @@ frame_progress = 0.838616
 script = ExtResource("5_rvmv1")
 
 [node name="LifeBar" type="Node2D" parent="Node2D"]
+position = Vector2(34, 32)
 
 [node name="Label" type="Label" parent="Node2D/LifeBar"]
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = 2.0
+offset_top = -1.0
+offset_right = 109.0
+offset_bottom = 25.0
 text = "Player health:"
 
 [node name="ProgressBar" type="ProgressBar" parent="Node2D/LifeBar"]
-offset_left = 68.0
-offset_top = 92.0
-offset_right = 246.0
-offset_bottom = 119.0
+offset_left = -1.0
+offset_top = 26.0
+offset_right = 177.0
+offset_bottom = 53.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_tpefy")
 max_value = 10.0
 step = 1.0
+value = 7.0
 rounded = true
 show_percentage = false
