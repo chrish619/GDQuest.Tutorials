@@ -13,14 +13,24 @@ public partial class SmoothPath : Path2D
 	public bool Straighten
 	{
 		get => _straighten;
-		set => StraightenPoints(_straighten = value);
+		set
+		{
+			StraightenPoints(_straighten = value);
+			if (_straighten && _smooth) { _smooth = false; }
+			NotifyPropertyListChanged();
+		}
 	}
 
 	[Export]
 	public bool Smooth
 	{
 		get => _smooth;
-		set => SmoothPoints(_smooth = value);
+		set
+		{
+			SmoothPoints(_smooth = value);
+			if (_smooth && _straighten) { _straighten = false; }
+			NotifyPropertyListChanged();
+		}
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -54,17 +64,16 @@ public partial class SmoothPath : Path2D
 			return;
 		}
 
-		int min = 0;
-		int max = Curve.PointCount;
+		int lim = Curve.PointCount - 1;
 
-		for (int i = 0; i < max; i++)
+		for (int i = 0; i <= lim; i++)
 		{
-			var prevPoint = Curve.GetPointPosition(i <= min ? min : (i - 1));
-			var nextPoint = Curve.GetPointPosition(i >= max ? max : (i + 1));
+			var prevPoint = Curve.GetPointPosition(i > 0 ? i - 1 : 0);
+			var nextPoint = Curve.GetPointPosition(i < lim ? i + 1 : lim);
 			var spline = prevPoint.DirectionTo(nextPoint) * SplineLength;
 
-			Curve.SetPointIn(i, -spline);
-			Curve.SetPointOut(i, spline);
+			Curve.SetPointIn(i, i > 0 ? -spline : new Vector2());
+			Curve.SetPointOut(i, i < lim ? spline : new Vector2());
 		}
 	}
 }
