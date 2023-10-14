@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://c1utpnmptf2xf"]
+[gd_scene load_steps=13 format=3 uid="uid://c1utpnmptf2xf"]
 
+[ext_resource type="Script" path="res://PlayerController.cs" id="1_cy2hs"]
 [ext_resource type="Texture2D" uid="uid://b1kwq751i41rs" path="res://assets/player-animations/player-damage-1.svg" id="1_ei8wn"]
 [ext_resource type="Texture2D" uid="uid://xa05v0rs2ef4" path="res://assets/player-animations/player-damage-2.svg" id="2_ycoe8"]
 [ext_resource type="Texture2D" uid="uid://mw22ctmadsmi" path="res://assets/player-animations/player.svg" id="3_0k7af"]
 [ext_resource type="Texture2D" uid="uid://b2okm5uhh0hap" path="res://assets/enemy-animations/enemy.svg" id="4_db5vy"]
 [ext_resource type="Script" path="res://SmoothPath.cs" id="4_vve6s"]
-[ext_resource type="Script" path="res://EnemyPathMovement.cs" id="5_rvmv1"]
+[ext_resource type="Script" path="res://EnemyPathFollow.cs" id="7_v54pj"]
+[ext_resource type="Script" path="res://EnemyMeta.cs" id="8_ae5hu"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_0poc8"]
 animations = [{
@@ -63,35 +65,53 @@ corner_detail = 17
 
 [node name="Node2D" type="Node2D" parent="."]
 
-[node name="Player" type="Node2D" parent="Node2D"]
-
-[node name="PlayerAnimation" type="AnimatedSprite2D" parent="Node2D/Player"]
+[node name="Player" type="Node2D" parent="Node2D" node_paths=PackedStringArray("LifeBar")]
 position = Vector2(270, 326)
+script = ExtResource("1_cy2hs")
+MaxPlayerHealth = 100
+LifeBar = NodePath("../LifeBar/ProgressBar")
+
+[node name="PlayerArea" type="Area2D" parent="Node2D/Player"]
+
+[node name="PlayerAnimation" type="AnimatedSprite2D" parent="Node2D/Player/PlayerArea"]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_0poc8")
-animation = &"damaged"
-frame = 1
-frame_progress = 0.363223
+autoplay = "damaged"
+frame_progress = 0.522197
+
+[node name="PlayerCollision" type="CollisionPolygon2D" parent="Node2D/Player/PlayerArea"]
+polygon = PackedVector2Array(-60, -60, 60, -10, 60, 10, -60, 60)
+
+[node name="DamageTimer" type="Timer" parent="Node2D/Player"]
+wait_time = 2.5
+one_shot = true
 
 [node name="Enemy" type="Node2D" parent="Node2D"]
 
-[node name="Path2D" type="Path2D" parent="Node2D/Enemy"]
+[node name="EnemyPath" type="Path2D" parent="Node2D/Enemy"]
 position = Vector2(-6, -4)
 curve = SubResource("Curve2D_jvj1f")
 script = ExtResource("4_vve6s")
 
-[node name="PathFollow2D" type="PathFollow2D" parent="Node2D/Enemy/Path2D"]
-position = Vector2(962.952, 345.848)
-rotation = -1.55098
+[node name="EnemyPathFollow" type="PathFollow2D" parent="Node2D/Enemy/EnemyPath"]
+position = Vector2(962.952, 345.851)
+rotation = -1.55097
 progress = 1406.38
+script = ExtResource("7_v54pj")
 
-[node name="EnemyAnimation" type="AnimatedSprite2D" parent="Node2D/Enemy/Path2D/PathFollow2D"]
+[node name="EnemyArea" type="Area2D" parent="Node2D/Enemy/EnemyPath/EnemyPathFollow"]
+
+[node name="EnemyAnimation" type="AnimatedSprite2D" parent="Node2D/Enemy/EnemyPath/EnemyPathFollow/EnemyArea"]
 scale = Vector2(0.7, 0.7)
 sprite_frames = SubResource("SpriteFrames_whk1w")
 frame_progress = 0.838616
 
-[node name="EnemyPathMovement" type="Node2D" parent="Node2D/Enemy/Path2D/PathFollow2D"]
-script = ExtResource("5_rvmv1")
+[node name="EnemyCollision" type="CollisionPolygon2D" parent="Node2D/Enemy/EnemyPath/EnemyPathFollow/EnemyArea"]
+polygon = PackedVector2Array(-60, -60, 60, -10, 60, 10, -60, 60)
+
+[node name="EnemyMeta" type="Node2D" parent="Node2D/Enemy/EnemyPath/EnemyPathFollow/EnemyArea"]
+script = ExtResource("8_ae5hu")
+CollisionDamage = 12
 
 [node name="LifeBar" type="Node2D" parent="Node2D"]
 position = Vector2(34, 32)
